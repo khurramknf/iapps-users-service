@@ -8,7 +8,11 @@ import {
   DeleteDateColumn,
 } from 'typeorm';
 
-export type Role = 'admin' | 'staff' | 'user';
+export enum Role {
+  USER = 'user',
+  STAFF = 'staff',
+  ADMIN = 'admin',
+}
 
 @Entity()
 export class User {
@@ -24,8 +28,11 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ type: 'varchar', default: 'user' })
+  @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
+
+  @Column({ default: false })
+  isActive: boolean;
 
   @CreateDateColumn()
   createdAt: Date;
