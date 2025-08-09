@@ -14,6 +14,8 @@ dist/
 .env.test.local
 .env.production.local
 
+!.env.example  # EXCEPTION: allow this one
+
 # Logs
 logs
 *.log

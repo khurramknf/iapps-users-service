@@ -1,23 +1,19 @@
-// File: services/users-service/backend/src/app.module.ts
-
+// services/users-service/backend/src/app.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './config/configuration';
-import { UsersController } from './users/users.controller';
-import { UsersService } from './users/users.service';
 import { User } from './users/entities/user.entity';
+import { UsersModule } from './users/users.module'; // ✅ Added
 
 @Module({
   imports: [
-    // ✅ Load environment variables from `.env`
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
-      envFilePath: '.env', // explicitly point to `.env`
+      envFilePath: '.env',
     }),
 
-    // ✅ TypeORM config using values from ConfigService
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -33,9 +29,7 @@ import { User } from './users/entities/user.entity';
       }),
     }),
 
-    TypeOrmModule.forFeature([User]),
+    UsersModule, // ✅ Modular import
   ],
-  controllers: [UsersController],
-  providers: [UsersService],
 })
 export class AppModule {}
